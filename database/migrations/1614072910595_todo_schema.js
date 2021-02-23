@@ -7,7 +7,7 @@ class TodoSchema extends Schema {
   up () {
     this.create('todos', (table) => {
       table.increments()
-      table.string('title').unique()
+      table.string('title', 190).notNullable().unique()
       table.text('description')
       table.timestamps()
     })

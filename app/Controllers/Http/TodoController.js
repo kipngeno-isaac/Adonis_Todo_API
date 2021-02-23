@@ -1,4 +1,5 @@
 'use strict'
+const Todo = use('App/Models/Todo')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -17,20 +18,23 @@ class TodoController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index ({ request, response, view }) {
+  async index ({ request, response }) {
+    try{
+      const todos = await Todo.all()
+      return response.status(200).send({
+        status: true,
+        data: todos,
+        message: 'Todos retrieved successfully.',
+      })
+    }catch(err){
+      return response.status(err.code).send({
+        status: false,
+        message: 'Failed to retrieve Todos.',
+        err:err.message
+      })
+    }
   }
 
-  /**
-   * Render a form to be used for creating a new todo.
-   * GET todos/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, view }) {
-  }
 
   /**
    * Create/save a new todo.
@@ -41,6 +45,22 @@ class TodoController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
+    const {title, description} = request.post()
+
+    try{
+      const todo = await Todo.create({title, description})
+      return response.status(201).send({
+        status: true,
+        data: todo,
+        message: 'Todo saved successfully.',
+      });
+    }catch(err){
+      return response.send({
+        status: false,
+        message: 'Todo failed to save.',
+        err:err.message
+      });
+    }
   }
 
   /**
