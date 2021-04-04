@@ -45,10 +45,10 @@ class TodoController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
-    const {title, description} = request.post()
+    const {title, description, user_id} = request.post()
 
     try{
-      const todo = await Todo.create({title, description})
+      const todo = await Todo.create({title, description, user_id})
       return response.status(201).send({
         status: true,
         data: todo,
@@ -73,6 +73,7 @@ class TodoController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+    
   }
 
   /**

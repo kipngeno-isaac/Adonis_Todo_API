@@ -21,5 +21,13 @@ Route.get('/', () => {
 })
 
 Route.group(()=>{
-  Route.resource('/todos', 'TodoController')
-}).prefix('api/v1')
+  Route.put('/:id', 'TodoController.update').middleware('auth')
+  Route.delete('/id', 'TodoController.delete').middleware('auth')
+  Route.post('/', 'TodoController.store').middleware('auth')
+  Route.get('/', 'TodoController.index');
+}).prefix('api/v1/todos')
+
+Route.group(()=>{
+  Route.post('/register', 'AuthController.register')
+  Route.post('/login', 'AuthController.login')
+}).prefix('auth')
