@@ -22,6 +22,13 @@ class User extends Model {
   }
 
   /**
+   *
+   * @returns one to many r/ship btwn user and todos
+   */
+  todos(){
+    return this.hasMany('App/Models/Todo')
+  }
+  /**
    * A relationship on tokens is required for auth to
    * work. Since features like `refreshTokens` or
    * `rememberToken` will be saved inside the
